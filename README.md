@@ -24,3 +24,11 @@ This repository serves as a live testing and development environment. The archit
 Please note that this is a testing repository. The files here are in the developing stage and will be updated constantly as new features are built and bugs are squashed. 
 
 **Future Release:** The code currently residing here is for development purposes. Once the integration between the UI and the N-PLAYER is complete and fully optimized, the final, polished version will be published as a separate, official Release.
+## ⚠️ Legal Disclaimer & Asset Usage
+**Strictly for Testing & Educational Purposes Only.**
+
+Please note that the current development build of N-PLAYER temporarily utilizes the original Netflix intro video and logo as placeholder assets. This is strictly for UI alignment, animation testing, and local development purposes.
+
+* **No Affiliation:** N-PLAYER is an independent, open-source educational project. It is **NOT** affiliated with, associated with, authorized by, or in any way officially connected with Netflix, Inc.
+* **Copyrights & Trademarks:** All trademarks, logos, and copyrights belonging to Netflix, Inc. are the property of their respective owners. 
+* **Temporary Use:** These specific assets are being used temporarily in the `construction_plane` and testing phases only. They **will be completely removed and replaced** with custom, royalty-free assets before any official release.
