@@ -14,8 +14,9 @@ I am working on bringing the exact premium feel of major streaming platforms to 
 ## 📂 Repository Structure
 This repository serves as a live testing and development environment. The architecture is divided to keep stable builds separate from experimental features:
 
-* 📁 **`sample/`** : This folder contains the original, currently working files and baseline templates. If you want to see the stable UI blocks, look here.
+* 📁 **`sample/`** : This folder contains the original, currently temp. working files and baseline templates. If you want to see the stable UI blocks, look here.
 * 📁 **`construction plane/`** : This folder houses the next-phase development files, experimental scripts, and work-in-progress features (like the UI and Player merging process).
+* 📁 **`Player/`** : This folder contains the original software file which are not usable 
 
 ## 🚧 Current Status & Roadmap
 **Status: Active Development (Testing Phase)**
