@@ -1,0 +1,38 @@
+{
+  "name": "netflix-electron-player",
+  "version": "1.0.0",
+  "description": "A Netflix-style desktop video player built with Electron.js",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "pack": "electron-builder --dir"
+  },
+  "keywords": [
+    "electron",
+    "video-player",
+    "netflix",
+    "desktop"
+  ],
+  "author": "Bhai",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.netflix.player",
+    "productName": "Netflix Player",
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "subtitles-parser": "^0.0.2",
+    "video.js": "^8.23.7"
+  }
+}
