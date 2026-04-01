@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #141414;
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        /* Netflix Logo Font */
+        .netflix-logo {
+            font-family: 'Netflix Sans', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent);
+            transition: all 0.4s ease;
+            padding: 15px 4%;
+        }
+
+        .header.scrolled {
+            background-color: #141414;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #e50914;
+            font-size: 25px;
+            font-weight: 900;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.4s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #b3b3b3;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            background: rgba(0,0,0,0.75);
+            border: 1px solid rgba(255,255,255,0.85);
+            color: white;
+            padding: 7px 10px 7px 35px;
+            border-radius: 4px;
+            width: 270px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+        .notifications, .profile {
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .notifications:hover, .profile:hover {
+            color: #b3b3b3;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            background: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face') center/cover;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+        
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 500px;
+            margin-top: 70px;
+        }
+
+        .hero-logo {
+            width: 400px;
+            height: auto;
+            margin-bottom: 20px;
+            background: url('https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/tx1O544a9T7n8Z_G12qaboulQQE/AAAABYSnxuB5X1FU5_gHmaMAFL4eTk-1CwONgmmOst_6aQQqHU7RDzfNjnWleYdXJJPWvd3JMr4uNGYivmSKNk7RvrTHv4y5u5s.webp?r=a5e') center/contain no-repeat;
+        }
+
+        .hero-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: white;
+        }
+
+        .match-score {
+            color: #46d369;
+            font-weight: 700;
+        }
+
+        .age-rating {
+            border: 1px solid #ddd;
+            padding: 0px 6px;
+            font-size: 11px;
+            color: #ddd;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.45);
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-play {
+            background-color: white;
+            color: black;
+        }
+
+        .btn-play:hover {
+            background-color: rgba(255,255,255,0.75);
+        }
+
+        .btn-info {
+            background-color: rgba(109,109,110,0.7);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: rgba(109,109,110,0.4);
+        }
+
+        /* Trailer Video */
+        .hero-trailer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .hero-trailer.playing {
+            opacity: 1;
+        }
+
+        .hero-trailer video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Content Rows */
+        .content-rows {
+            margin-top: -150px;
+            position: relative;
+            z-index: 2;
+            padding-bottom: 100px;
+        }
+
+        .row-container {
+            margin-bottom: 3vw;
+        }
+
+        .row-header {
+            padding: 0 4%;
+            margin-bottom: 10px;
+        }
+
+        .row-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e5e5e5;
+            margin: 0;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 0 4%;
+        }
+
+        .row-posters {
+            display: flex;
+            gap: 4px;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            transition: transform 0.5s ease;
+        }
+
+        .row-posters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .movie-card {
+            position: relative;
+            min-width: 240px;
+            height: 135px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .movie-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 30px 12px 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .movie-card:hover .movie-overlay {
+            opacity: 1;
+        }
+
+        .movie-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: white;
+        }
+
+        .movie-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #d2d2d2;
+        }
+
+        .movie-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .rating-star {
+            color: #46d369;
+            font-size: 10px;
+        }
+
+        /* Continue Watching Progress */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: #e50914;
+            transition: width 0.3s ease;
+            border-radius: 0 0 6px 6px;
+        }
+
+        /* My List Button */
+        .add-list-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(42,42,42,0.6);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .movie-card:hover .add-list-btn {
+            opacity: 1;
+        }
+
+        .add-list-btn:hover {
+            border-color: white;
+            background: rgba(42,42,42,0.8);
+        }
+
+        .add-list-btn.added {
+            background: rgba(255,255,255,0.9);
+            color: #141414;
+            border-color: rgba(255,255,255,0.9);
+        }
+
+        /* Slider Controls */
+        .slider-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 60px;
+            height: 135px;
+            cursor: pointer;
+            font-size: 24px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .slider-container:hover .slider-control {
+            opacity: 1;
+        }
+
+        .slider-control:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        .slider-control.prev {
+            left: 0;
+        }
+
+        .slider-control.next {
+            right: 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #181818;
+            border-radius: 6px;
+            max-width: 850px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-hero {
+            position: relative;
+            height: 480px;
+            background: linear-gradient(77deg, rgba(0,0,0,.6), transparent 85%),
+                        url('https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABVxuSa6LOth5aU7UK8n4PYjKqhsXrdu_CMiAmN5LdSNdmztEfy51xlOjXzkBypol3mLJqz5Shr5CamPmQ23Q_5qFHJqe5A.webp?r=229') center/cover;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #181818;
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: #333;
+        }
+
+        .modal-hero-content {
+            position: absolute;
+            bottom: 60px;
+            left: 48px;
+            right: 48px;
+        }
+
+        .modal-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .modal-body {
+            padding: 0 48px 48px;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            line-height: 1.4;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .modal-meta {
+            font-size: 14px;
+        }
+
+        .modal-meta-item {
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .modal-meta-label {
+            color: #777;
+            margin-right: 8px;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 135px;
+            width: 100%;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #333;
+            border-top: 3px solid #e50914;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .movie-card {
+                min-width: 200px;
+                height: 113px;
+            }
+            
+            .hero-content {
+                max-width: 420px;
+            }
+            
+            .hero-logo {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-input {
+                width: 200px;
+            }
+            
+            .hero {
+                padding: 0 20px;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                margin-top: 50px;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .hero-logo {
+                width: 250px;
+            }
+            
+            .content-rows {
+                margin-top: -100px;
+            }
+            
+            .row-container {
+                margin-bottom: 20px;
+            }
+            
+            .movie-card {
+                min-width: 150px;
+                height: 84px;
+            }
+        }
+
+        /* Hover Effects */
+        .movie-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .movie-card:hover::before {
+            opacity: 1;
+        
+        }
+        .detail-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.detail-container {
+  width: 900px;
+  background: #141414;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: scaleUp 0.3s ease;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.detail-hero {
+  position: relative;
+  height: 450px;
+}
+
+.detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-gradient {
+  position: absolute;
+  bottom: 0;
+  height: 60%;
+  width: 100%;
+  background: linear-gradient(to top, #141414, transparent);
+}
+
+.detail-content {
+  padding: 30px;
+  color: white;
+}
+
+.close-detail {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+}
+        /* Motion Background Layer */
+.motion-background-component {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dark Gradient Overlay */
+.hero-vignette {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(
+        to top,
+        rgba(20,20,20,1) 0%,
+        rgba(20,20,20,0.8) 40%,
+        rgba(20,20,20,0.4) 70%,
+        transparent 100%
+    );
+}
+
+.trailer-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        77deg,
+        rgba(0,0,0,0.7),
+        transparent 85%
+    );
+}
+.detail-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.detail-container {
+  width: 900px;
+  background: #141414;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: scaleUp 0.3s ease;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.detail-hero {
+  position: relative;
+  height: 450px;
+}
+
+.detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-gradient {
+  position: absolute;
+  bottom: 0;
+  height: 60%;
+  width: 100%;
+  background: linear-gradient(to top, #141414, transparent);
+}
+
+.detail-content {
+  padding: 30px;
+  color: white;
+}
+
+/* Maturity Badge */
+.maturity-badge {
+    position: absolute;
+    bottom: 120px;
+    right: 0;
+    background: rgba(51,51,51,0.6);
+    padding: 6px 12px;
+    border-left: 3px solid #dcdcdc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Fix Hero Content Layer */
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+.preview-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.preview-container {
+  width: 900px;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: scaleIn 0.35s ease;
+  background: #141414;
+  position: relative;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.preview-hero {
+  height: 500px;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-gradient {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, #141414, transparent);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="logo netflix-logo">NETFLIX</a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#" onclick="filterContent('tv')">TV Shows</a></li>
+                <li><a href="#" onclick="filterContent('movies')">Movies</a></li>
+                <li><a href="#" onclick="showNewAndPopular()">New & Popular</a></li>
+                <li><a href="#" onclick="showMyList()">My List</a></li>
+                <li><a href="#">Browse by Languages</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search for movies, TV shows..." 
+                           oninput="handleSearch(this.value)">
+                </div>
+                <i class="fas fa-bell notifications"></i>
+                <div class="profile-dropdown">
+                    <div class="profile-avatar"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+       <div class="motion-background-component bottom-layer full-screen">
+    <div class="hero-image-wrapper">
+        <img class="hero-bg-image"
+             src="https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABYg3J5Rj5dQRXqzye8rt5hKcJE-B_Mric7GRqsJrcK44U-H4Z0q4l4ZQQGEHiKIw5pK5My-JvMCwJf7Fl-VNF5KsOvu72dVn5LNV.webp?r=99b"
+             alt="Hero Background">
+
+        <div class="trailer-vignette"></div>
+        <div class="hero-vignette"></div>
+
+        <div class="maturity-badge">
+            <span>U/A 16+</span>
+        </div>
+    </div>
+</div>
+        <div class="hero-content">
+            <div class="hero-logo"></div>
+            <div class="hero-info">
+                <span class="match-score">98% Match</span>
+                <span>2024</span>
+                <span class="age-rating">TV-14</span>
+                <span>3 Seasons</span>
+            </div>
+            <p class="hero-description">
+                Comedian Kapil Sharma hosts this laugh-out-loud variety talk show with celebrity guests, 
+                hilarious antics and his signature supporting cast.
+            </p>
+            <div class="hero-buttons">
+    <button class="btn btn-play" onclick="playTrailer('The Kapil Sharma Show')">
+        <i class="fas fa-play"></i> Play
+    </button>
+
+    <button class="btn btn-info" onclick="openModal('The Kapil Sharma Show', 'hero')">
+        <i class="fas fa-info-circle"></i> More Info
+    </button>
+</div>
+    </section>
+
+    <!-- Content Rows -->
+    <div class="content-rows">
+        <!-- Continue Watching -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Continue Watching for John</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="continue-watching">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('continue-watching', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('continue-watching', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Trending Now -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Trending Now</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="trending-now">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('trending-now', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('trending-now', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Netflix Originals -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Netflix Originals</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="netflix-originals">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('netflix-originals', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('netflix-originals', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Because You Watched -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Because You Watched "The Queen's Gambit"</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="because-you-watched">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('because-you-watched', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('because-you-watched', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Movies -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Action Movies</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="action-movies">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('action-movies', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('action-movies', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Comedy Movies -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Comedy Movies</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="comedy-movies">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('comedy-movies', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('comedy-movies', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Horror Movies -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Horror Movies</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="horror-movies">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('horror-movies', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('horror-movies', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Documentaries -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Documentaries</h2>
+            </div>
+            <div class="slider-container">
+                <div class="row-posters" id="documentaries">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <button class="slider-control prev" onclick="slideRow('documentaries', 'prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-control next" onclick="slideRow('documentaries', 'next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Info Modal -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <div class="modal-hero" id="modalHero">
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-hero-content">
+                    <h1 class="modal-title" id="modalTitle">Movie Title</h1>
+                    <div class="modal-buttons">
+                        <button class="btn btn-play" onclick="playContent()">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="btn btn-info" onclick="toggleMyList(this)" id="modalMyListBtn">
+                            <i class="fas fa-plus"></i> My List
+                        </button>
+                        <button class="btn btn-info" onclick="likeContent()">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <button class="btn btn-info" onclick="shareContent()">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-details">
+                    <div>
+                        <p class="modal-description" id="modalDescription">
+                            Loading description...
+                        </p>
+                    </div>
+                    <div class="modal-meta">
+                        <div class="modal-meta-item">
+                            <span class="modal-meta-label">Cast:</span>
+                            <span id="modalCast">Loading...</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <span class="modal-meta-label">Genres:</span>
+                            <span id="modalGenres">Loading...</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <span class="modal-meta-label">This show is:</span>
+                            <span id="modalTags">Loading...</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <span class="modal-meta-label">Maturity Rating:</span>
+                            <span id="modalRating">TV-14</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PREVIEW MODAL -->
+<div class="preview-modal" id="previewModal">
+  <div class="preview-container">
+
+    <button class="close-btn" id="closePreview">✕</button>
+
+    <div class="preview-hero">
+      <img src="https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABYg3J5Rj5dQRXqzye8rt5hKcJE-B_Mric7GRqsJrcK44U-H4Z0q4l4ZQQGEHiKIw5pK5My-JvMCwJf7Fl-VNF5KsOvu72dVn5LNV.webp?r=99b" class="preview-image">
+      <div class="preview-gradient"></div>
+    </div>
+
+  </div>
+</div>
+
+    <script>
+        function playTrailer(title) {
+
+    let foundShow = null;
+
+    for (let category in netflixContent) {
+        const show = netflixContent[category].find(item => item.title === title);
+        if (show) {
+            foundShow = show;
+            break;
+        }
+    }
+
+    if (foundShow) {
+        document.querySelector(".preview-image").src = foundShow.image;
+        document.getElementById("previewModal").style.display = "flex";
+    } else {
+        console.log("Show not found:", title);
+    }
+}
+document.getElementById("closePreview").addEventListener("click", function () {
+    document.getElementById("previewModal").style.display = "none";
+});
+        // Netflix Movie/TV Show Database
+        const netflixContent = {
+            'continue-watching': [
+                {
+                    title: "The Queen's Gambit",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABVxuSa6LOth5aU7UK8n4PYjKqhsXrdu_CMiAmN5LdSNdmztEfy51xlOjXzkBypol3mLJqz5Shr5CamPmQ23Q_5qFHJqe5A.webp?r=229",
+                    rating: 4.8,
+                    year: 2020,
+                    genre: "Drama",
+                    progress: 65,
+                    description: "In a 1950s orphanage, a young girl reveals an astonishing talent for chess and begins an unlikely journey to stardom.",
+                    cast: "Anya Taylor-Joy, Marielle Heller, Thomas Brodie-Sangster",
+                    genres: "Drama, Period Drama, Coming of Age",
+                    tags: "Emotional, Inspiring, Character-driven"
+                },
+                {
+                    title: "Money Heist",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABQCoK7PnCpj7BP_LYZurkBrOGI6ad_T8GVAhk0vKV5zVzfgqGVEXW2p4xH2aKw5nLcIe0-CXKGJ4Vt0-pCnFxp8q6K2aBg.webp?r=67f",
+                    rating: 4.7,
+                    year: 2017,
+                    genre: "Crime",
+                    progress: 23,
+                    description: "Eight uniquely-skilled robbers storm the Royal Mint of Spain in a meticulously planned heist.",
+                    cast: "Úrsula Corberó, Itziar Ituño, Álvaro Morte",
+                    genres: "Crime, Thriller, Spanish",
+                    tags: "Suspenseful, Exciting, Mind-bending"
+                },
+                {
+                    title: "Bridgerton",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABUF1MNOOWyaJ7TFppL4g6d2-_pLkl0L0NlNpIH-5TdWnVp3Cl4w5eVqV0zwMTkh7MlnvlKEfBOUfLgxEWkTt8b4eLWLgww.webp?r=3bb",
+                    rating: 4.5,
+                    year: 2020,
+                    genre: "Romance",
+                    progress: 89,
+                    description: "The eight close-knit siblings of the Bridgerton family look for love and happiness in London high society.",
+                    cast: "Nicola Coughlan, Jonathan Bailey, Luke Newton",
+                    genres: "Romance, Period Drama, British",
+                    tags: "Steamy, Romantic, Feel-good"
+                },
+                {
+                    title: "The Crown",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABThMKzH7ULh9E2kXacwAz6aKa8rCGlVCq7r5X7C6dKxQ8dNKfcNJSGJ2TjkVFfpX3pJhZkNqgIJ5VgVkVfWg_xYxLg.webp?r=1d0",
+                    rating: 4.9,
+                    year: 2016,
+                    genre: "Drama",
+                    progress: 45,
+                    description: "This drama follows the political rivalries and romance of Queen Elizabeth II's reign and the events that shaped the second half of the 20th century.",
+                    cast: "Imelda Staunton, Jonathan Pryce, Lesley Manville",
+                    genres: "Drama, Historical, British",
+                    tags: "Critically Acclaimed, Period Drama, Character-driven"
+                }
+            ],
+            'trending-now': [ 
+                {
+    title: "The Kapil Sharma Show",
+    image: "https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABYg3J5Rj5dQRXqzye8rt5hKcJE-B_Mric7GRqsJrcK44U-H4Z0q4l4ZQQGEHiKIw5pK5My-JvMCwJf7Fl-VNF5KsOvu72dVn5LNV.webp?r=99b",
+    rating: 4.5,
+    year: 2016,
+    genre: "Comedy",
+    description: "Kapil Sharma hosts celebrity guests in this comedy talk show.",
+    cast: "Kapil Sharma, Archana Puran Singh",
+    genres: "Comedy, Talk Show",
+    tags: "Funny, Celebrity, Indian"
+},
+      
+                {
+                    title: "Wednesday",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfCmiJQqScqZHN5EzFf4qOL8IVq9HG5HcTmGhkn6aBc8w7FxK5qz-DzOy7qHzfT5G3JLr9OzH5d8zFZ3qG-gPxQ7dg.webp?r=a32",
+                    rating: 4.6,
+                    year: 2022,
+                    genre: "Comedy",
+                    description: "Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends at Nevermore Academy.",
+                    cast: "Jenna Ortega, Emma Myers, Hunter Doohan",
+                    genres: "Comedy, Horror, Teen",
+                    tags: "Quirky, Dark Comedy, Supernatural"
+                },
+                {
+                    title: "Squid Game",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABSVlcQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9Hq7zY4Xgw3Gv8HqP2tNpTczVX5JdFpvNlQ.webp?r=1c4",
+                    rating: 4.8,
+                    year: 2021,
+                    genre: "Thriller",
+                    description: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games for a tempting prize.",
+                    cast: "Lee Jung-jae, Park Hae-soo, Wi Ha-jun",
+                    genres: "Thriller, Horror, Korean",
+                    tags: "Violent, Suspenseful, Mind-bending"
+                },
+                {
+                    title: "Emily in Paris",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfZj8rHtKz5qHPqKn9_Zf8-_8bz3d5Y4J4pX8-_8-H9tQ7z6N7z6N7zXzXzXzXzXzX.webp?r=4fb",
+                    rating: 4.2,
+                    year: 2020,
+                    genre: "Romance",
+                    description: "After landing her dream job in Paris, Chicago marketing exec Emily Cooper embraces her adventurous new life.",
+                    cast: "Lily Collins, Philippine Leroy-Beaulieu, Ashley Park",
+                    genres: "Romance, Comedy, Feel-good",
+                    tags: "Light-hearted, Romantic, Fashion"
+                },
+                {
+                    title: "Ozark",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfN3NRHtKz5qHPqKn9_Zf8-_8bz3d5Y4J4pX8-_8-H9tQ7z6N7z6N7zXzXzXzX.webp?r=b44",
+                    rating: 4.7,
+                    year: 2017,
+                    genre: "Crime",
+                    description: "A financial advisor drags his family from Chicago to the Missouri Ozarks, where he must launder money to appease a drug boss.",
+                    cast: "Jason Bateman, Laura Linney, Sofia Hublitz",
+                    genres: "Crime, Drama, Thriller",
+                    tags: "Dark, Suspenseful, Gritty"
+                },
+                {
+                    title: "The Witcher",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfPpKzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9Hq7zY4Xgw3Gv8HqP2tNpTczVX.webp?r=256",
+                    rating: 4.4,
+                    year: 2019,
+                    genre: "Fantasy",
+                    description: "Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.",
+                    cast: "Henry Cavill, Anya Chalotra, Freya Allan",
+                    genres: "Fantasy, Adventure, Action",
+                    tags: "Exciting, Fantasy, Epic"
+                }
+            ],
+            'netflix-originals': [
+                {
+                    title: "House of Cards",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfWQ2c5qHPqKn9_Zf8-_8bz3d5Y4J4pX8-_8-H9tQ7z6N7z6N7zXzXzX.webp?r=e11",
+                    rating: 4.5,
+                    year: 2013,
+                    genre: "Drama",
+                    description: "A Machiavellian politician works his way up the ladder of power, unscrupulously climbing towards the presidency.",
+                    cast: "Kevin Spacey, Robin Wright, Kate Mara",
+                    genres: "Drama, Political, Thriller",
+                    tags: "Dark, Political, Mind-games"
+                },
+                {
+                    title: "Orange is the New Black",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfMm8m5qHPqKn9_Zf8-_8bz3d5Y4J4pX8-_8-H9tQ7z6N7z6N7zXzX.webp?r=73b",
+                    rating: 4.3,
+                    year: 2013,
+                    genre: "Comedy",
+                    description: "A privileged New Yorker ends up in a women's prison when a past crime catches up with her in this Emmy-winning series.",
+                    cast: "Taylor Schilling, Laura Prepon, Uzo Aduba",
+                    genres: "Comedy, Drama, Prison",
+                    tags: "Diverse, Character-driven, Social issues"
+                },
+                {
+                    title: "Narcos",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfTt6KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9Hq7zY4X.webp?r=4e9",
+                    rating: 4.6,
+                    year: 2015,
+                    genre: "Crime",
+                    description: "The true story of Colombia's infamously violent and powerful drug cartels fuels this gritty gangster drama series.",
+                    cast: "Wagner Moura, Boyd Holbrook, Pedro Pascal",
+                    genres: "Crime, Drama, Biography",
+                    tags: "Violent, Gritty, Based on true events"
+                },
+                {
+                    title: "Black Mirror",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfBb2zQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9Hq.webp?r=1ff",
+                    rating: 4.7,
+                    year: 2011,
+                    genre: "Sci-Fi",
+                    description: "This sci-fi anthology series explores a twisted, high-tech near-future where humanity's greatest innovations clash with its darkest instincts.",
+                    cast: "Various cast per episode",
+                    genres: "Sci-Fi, Anthology, Thriller",
+                    tags: "Mind-bending, Dark, Thought-provoking"
+                }
+            ],
+            'because-you-watched': [
+                {
+                    title: "The Chess Story",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfRf9KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9Hq7z.webp?r=8c3",
+                    rating: 4.2,
+                    year: 2021,
+                    genre: "Drama",
+                    description: "A master chess player faces his greatest challenge in this psychological drama.",
+                    cast: "Oliver Masucci, Birgit Minichmayr, Albrecht Schuch",
+                    genres: "Drama, Psychological, Chess",
+                    tags: "Intense, Strategic, Mind-games"
+                },
+                {
+                    title: "The Queen",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfPd8KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2eUmn9.webp?r=44a",
+                    rating: 4.4,
+                    year: 2006,
+                    genre: "Drama",
+                    description: "After the death of Princess Diana, Queen Elizabeth II struggles with her reaction to a sequence of events nobody could have predicted.",
+                    cast: "Helen Mirren, Michael Sheen, James Cromwell",
+                    genres: "Drama, Biography, Historical",
+                    tags: "Award-winning, Royal, Character study"
+                },
+                {
+                    title: "Pawn Sacrifice",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfMb7KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ2e.webp?r=7d2",
+                    rating: 4.1,
+                    year: 2014,
+                    genre: "Drama",
+                    description: "American chess champion Bobby Fischer prepares for a legendary match against Russian Boris Spassky.",
+                    cast: "Tobey Maguire, Liev Schreiber, Peter Sarsgaard",
+                    genres: "Drama, Biography, Sport",
+                    tags: "Chess, Cold War, Based on true events"
+                },
+                {
+                    title: "Genius",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfLa6KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwe.webp?r=9e1",
+                    rating: 4.3,
+                    year: 2017,
+                    genre: "Drama",
+                    description: "The life stories of history's greatest minds, from Einstein to Picasso to Aretha Franklin.",
+                    cast: "Geoffrey Rush, Johnny Flynn, Emily Watson",
+                    genres: "Drama, Biography, Historical",
+                    tags: "Educational, Inspiring, Genius minds"
+                }
+            ],
+            'action-movies': [
+                {
+                    title: "Extraction",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfKX5KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwekgDJ.webp?r=2a4",
+                    rating: 4.3,
+                    year: 2020,
+                    genre: "Action",
+                    description: "A black-market mercenary who has nothing to lose is hired to rescue the kidnapped son of an imprisoned international crime lord.",
+                    cast: "Chris Hemsworth, Rudhraksh Jaiswal, Randeep Hooda",
+                    genres: "Action, Thriller, Crime",
+                    tags: "Violent, High-octane, Intense"
+                },
+                {
+                    title: "The Old Guard",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfJW4KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDwek.webp?r=8b7",
+                    rating: 4.2,
+                    year: 2020,
+                    genre: "Action",
+                    description: "A covert team of immortal mercenaries is suddenly exposed and must now fight to keep their identity a secret.",
+                    cast: "Charlize Theron, KiKi Layne, Matthias Schoenaerts",
+                    genres: "Action, Fantasy, Superhero",
+                    tags: "Supernatural, Female lead, Immortality"
+                },
+                {
+                    title: "6 Underground",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfIV3KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcpBOfDw.webp?r=6c5",
+                    rating: 4.0,
+                    year: 2019,
+                    genre: "Action",
+                    description: "Six individuals from all around the globe, each the very best at what they do, have been chosen to work together.",
+                    cast: "Ryan Reynolds, Mélanie Laurent, Manuel Garcia-Rulfo",
+                    genres: "Action, Thriller, Adventure",
+                    tags: "Explosive, High-budget, Vigilante"
+                },
+                {
+                    title: "Triple Frontier",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfHU2KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKcp.webp?r=3d8",
+                    rating: 4.1,
+                    year: 2019,
+                    genre: "Action",
+                    description: "Former Special Forces operatives reunite to plan a heist in a sparsely populated multi-border zone of South America.",
+                    cast: "Ben Affleck, Oscar Isaac, Charlie Hunnam",
+                    genres: "Action, Thriller, Crime",
+                    tags: "Heist, Military, Suspenseful"
+                }
+            ],
+            'comedy-movies': [
+                {
+                    title: "The Kissing Booth",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfGT1KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptUKc.webp?r=4f9",
+                    rating: 3.8,
+                    year: 2018,
+                    genre: "Comedy",
+                    description: "A high school student is forced to confront a secret crush when she finds herself helping with the school kissing booth.",
+                    cast: "Joey King, Jacob Elordi, Joel Courtney",
+                    genres: "Comedy, Romance, Teen",
+                    tags: "Teen romance, Light-hearted, High school"
+                },
+                {
+                    title: "To All the Boys I've Loved Before",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfFS0KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQptU.webp?r=5a1",
+                    rating: 4.2,
+                    year: 2018,
+                    genre: "Romance",
+                    description: "A teenage girl's secret love letters are exposed and wreak havoc on her love life.",
+                    cast: "Lana Condor, Noah Centineo, Janel Parrish",
+                    genres: "Romance, Comedy, Teen",
+                    tags: "Sweet, Coming-of-age, Letters"
+                },
+                {
+                    title: "The Perfect Date",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfER9KzQfFKVaKzIbrCc4fXXFGgOWMNc7vtQp.webp?r=6b2",
+                    rating: 3.9,
+                    year: 2019,
+                    genre: "Comedy",
+                    description: "To save up for college, Brooks Rattigan creates an app where anyone can pay him to play the perfect stand-in boyfriend.",
+                    cast: "Noah Centineo, Laura Marano, Camila Mendes",
+                    genres: "Comedy, Romance, Teen",
+                    tags: "App-based dating, Fake relationship, College"
+                },
+                {
+                    title: "Set It Up",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfDQ8KzQfFKVaKzIbrCc4fXXFGgOWMNc7vt.webp?r=7c3",
+                    rating: 4.0,
+                    year: 2018,
+                    genre: "Romance",
+                    description: "Two assistants hatch a plan to match-make their two bosses, but end up falling for each other instead.",
+                    cast: "Zoey Deutch, Glen Powell, Taye Diggs",
+                    genres: "Romance, Comedy, Workplace",
+                    tags: "Workplace romance, Match-making, Office"
+                }
+            ],
+            'horror-movies': [
+                {
+                    title: "The Ritual",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfCP7KzQfFKVaKzIbrCc4fXXFGgOWMNc7.webp?r=8d4",
+                    rating: 4.1,
+                    year: 2017,
+                    genre: "Horror",
+                    description: "A group of friends with a complicated history reunite to walk through the Scandinavian wilderness but a wrong turn leads to mysteriously hostile encounters.",
+                    cast: "Rafe Spall, Arsher Ali, Robert James-Collier",
+                    genres: "Horror, Thriller, Supernatural",
+                    tags: "Forest horror, Supernatural, Psychological"
+                },
+                {
+                    title: "His House",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfBO6KzQfFKVaKzIbrCc4fXXFGgOWMN.webp?r=9e5",
+                    rating: 4.3,
+                    year: 2020,
+                    genre: "Horror",
+                    description: "A refugee couple's new life in an English town is complicated by disturbing discoveries about their new home.",
+                    cast: "Ṣọpẹ́ Dìrísù, Wunmi Mosaku, Matt Smith",
+                    genres: "Horror, Drama, Supernatural",
+                    tags: "Social commentary, Haunted house, Refugee story"
+                },
+                {
+                    title: "Cam",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfAN5KzQfFKVaKzIbrCc4fXXFGgOW.webp?r=af6",
+                    rating: 3.8,
+                    year: 2018,
+                    genre: "Horror",
+                    description: "Alice's identity is stolen by someone who looks exactly like her and has taken over her webcam show.",
+                    cast: "Madeline Brewer, Patch Darragh, Melora Walters",
+                    genres: "Horror, Thriller, Technology",
+                    tags: "Identity theft, Digital horror, Webcam"
+                },
+                {
+                    title: "In the Tall Grass",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABf9M4KzQfFKVaKzIbrCc4fXXFGg.webp?r=bg7",
+                    rating: 3.6,
+                    year: 2019,
+                    genre: "Horror",
+                    description: "After hearing a child screaming for help from the green depths of a vast field of tall grass, Becky and Cal venture into the grass to rescue him.",
+                    cast: "Laysla De Oliveira, Avery Whitted, Patrick Wilson",
+                    genres: "Horror, Mystery, Supernatural",
+                    tags: "Stephen King, Maze-like, Supernatural"
+                }
+            ],
+            'documentaries': [
+                {
+                    title: "Making a Murderer",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABf8L3KzQfFKVaKzIbrCc4fXXF.webp?r=ch8",
+                    rating: 4.5,
+                    year: 2015,
+                    genre: "Documentary",
+                    description: "Filmed over 10 years, this real-life thriller follows a DNA exoneree who, while exposing police corruption, becomes a suspect in a grisly new crime.",
+                    cast: "Steven Avery, Dolores Avery, Laura Nirider",
+                    genres: "Documentary, True Crime, Legal",
+                    tags: "True crime, Legal system, Controversial"
+                },
+                {
+                    title: "Tiger King",
+                    image: "https://occ-0-2851-2186.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABf7K2KzQfFKVaKzIbrCc4fXX.webp?r=di9",
+                    rating: 4.2,
+                    year: 2020,
+                    genre: "Documentary",
+                    description: "A zoo owner spirals out of control amid a cast of eccentric characters in this true murder-for-hire story from the underworld of big cat breeding.",
+                }
+            ]
+            function playTrailer(title) {
+
+    let foundShow = null;
+
+    for (let category in netflixContent) {
+        const show = netflixContent[category].find(item => item.title === title);
+        if (show) {
+            foundShow = show;
+            break;
+        }
+    }
+
+    if (foundShow) {
+        document.querySelector(".preview-image").src = foundShow.image;
+        document.getElementById("previewModal").style.display = "flex";
+    }
+}  
+document.getElementById("closePreview").onclick = function() {
+    document.getElementById("previewModal").style.display = "none";
+};           
+            </script>
+            <div class="detail-modal" id="detailModal">
+  <div class="detail-container">
+
+    <span class="close-detail" onclick="closeDetail()">✕</span>
+
+    <div class="detail-hero">
+      <img id="detailImage">
+      <div class="detail-gradient"></div>
+    </div>
+
+    <div class="detail-content">
+      <h1 id="detailTitle"></h1>
+      <p class="meta">
+        <span id="detailYear"></span> • 
+        <span id="detailGenre"></span>
+      </p>
+      <p id="detailDescription"></p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
